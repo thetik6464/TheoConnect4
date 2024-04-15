@@ -15,6 +15,45 @@ grid = [
 ]
 
 
+def has_colour_won(colour: str) -> bool:
+    for row in [5, 4, 3]:
+        for column in [0, 1, 2, 3]:
+            four_by_four_square = [
+                grid[row - 3][column:column + 4],
+                grid[row - 2][column:column + 4],
+                grid[row - 1][column:column + 4],
+                grid[row - 0][column:column + 4]
+            ]
+
+            # check horizontals
+            if (all(item == colour for item in four_by_four_square[0]) or
+                all(item == colour for item in four_by_four_square[1]) or
+                all(item == colour for item in four_by_four_square[2]) or
+                all(item == colour for item in four_by_four_square[3])):
+                return True
+
+            # check verticals
+            for vertical in [0, 1, 2, 3]:
+                if (four_by_four_square[0][vertical] == colour and
+                    four_by_four_square[1][vertical] == colour and
+                    four_by_four_square[2][vertical] == colour and
+                    four_by_four_square[3][vertical] == colour):
+                    return True
+
+            # check two diagonals
+            if (four_by_four_square[0][0] == colour and
+                four_by_four_square[1][1] == colour and
+                four_by_four_square[2][2] == colour and
+                four_by_four_square[3][3] == colour):
+                return True
+
+            if (four_by_four_square[0][3] == colour and
+                four_by_four_square[1][2] == colour and
+                four_by_four_square[2][1] == colour and
+                four_by_four_square[3][0] == colour):
+                return True
+    return False
+
 def print_grid():
     print(f"  1   2    3   4   5    6   7")
     print(f"+-----------------------------+")
@@ -76,6 +115,9 @@ if __name__ == '__main__':
             print_grid()
 
             # see if the player who made the move won
+            if has_colour_won(whose_move_is_it):
+                print(f"{whose_move_is_it} won!")
+                break
 
             # if no one has won yet, switch sides
             if whose_move_is_it == y:
